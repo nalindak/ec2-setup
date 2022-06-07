@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mv ~/.bashrc ~/.bashrc_original
-curl https://github.com/nalindak/ec2-setup/blob/main/.bashrc > ~/.bashrc
+curl https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc > ~/.bashrc
 source ~/.bashrc
 
 sudo yum update -y
