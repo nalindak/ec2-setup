@@ -151,7 +151,7 @@ alias ll='ls -Fls' # long listing format
 alias labc='ls -lap' #alphabetical sort
 alias lf="ls -l | egrep -v '^d'" # files only
 alias ldir="ls -l | egrep '^d'" # directories only
-alias l="ls -lart --color=always'" # directories only
+alias l='ls -lart --color=always' # directories only
 
 # alias chmod commands
 alias mx='chmod a+x'
