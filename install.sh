@@ -1,8 +1,14 @@
 #!/bin/bash
 
-mv ~/.bashrc ~/.bashrc_original
-curl -s 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc' -o ~/.bashrc
-source ~/.bashrc
+if [ -r ~/.bashrc ]; then
+    if [ -r ~/.bashrc_original ]; then
+        echo 'Original bash file is exists!'
+    else
+        mv ~/.bashrc ~/.bashrc_original
+    fi
+    curl -s 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc' -o ~/.bashrc
+    source ~/.bashrc
+fi
 
 # Show the current distribution
 function distribution ()
