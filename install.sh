@@ -7,13 +7,13 @@ if [ -r ~/.bashrc ]; then
     else
         mv ~/.bashrc ~/.bashrc_original
     fi
-    curl -s 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc' -o ~/.bashrc
+    curl --slient 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc' -o ~/.bashrc
     source ~/.bashrc
 fi
 
 # Add kubectl command aliases
 if [ ! -f ~/.kubectl_aliases ]; then
-    curl -s 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.kubectl_aliases' -o ~/.kubectl_aliases
+    curl --silent 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.kubectl_aliases' -o ~/.kubectl_aliases
     source ~/.kubectl_aliases
 fi
 
