@@ -11,6 +11,11 @@ if [ -f /etc/bashrc ]; then
 	 . /etc/bashrc
 fi
 
+# Source kubectl aliases
+if [ -f ~/.kubectl_aliases ]; then
+    . ~/.kubectl_aliases
+fi
+
 # Enable bash programmable completion features in interactive shells
 if [ -f /usr/share/bash-completion/bash_completion ]; then
 	. /usr/share/bash-completion/bash_completion
