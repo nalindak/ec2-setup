@@ -164,6 +164,7 @@ alias 755='chmod -R 755'
 alias 777='chmod -R 777'
 
 # Search command line history
+aliss h="history"
 alias hs="history | grep "
 alias hsi="history | grep -i "
 
