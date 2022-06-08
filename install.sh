@@ -51,6 +51,12 @@ function distribution ()
 	echo $dtype
 }
 
+# Install docker-compose
+function install_docker_compose ()
+{
+    sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/bin/docker-compose && sudo chmod +x /usr/bin/docker-compose && sudo docker-compose --version
+}
+
 # Show the current version of the operating system
 function ec2_setup ()
 {
@@ -59,10 +65,13 @@ function ec2_setup ()
 
 	if [ $dtype == "redhat" ]; then
         sudo yum update -y
-        sudo yum install docker git jq tree awscli -y
-        sudo usermod -aG docker $USER
+        sudo yum install git jq tree awscli -y
+        sudo amazon-linux-extras install docker
         sudo service docker start
+        sudo usermod -aG docker $USER
         sudo chmod 666 /var/run/docker.sock
+        sudo chkconfig docker on
+        install_docker_compose
 	elif [ $dtype == "suse" ]; then
 		cat /etc/SuSE-release
 	elif [ $dtype == "debian" ]; then
