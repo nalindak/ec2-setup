@@ -5,7 +5,7 @@ curl -s 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc' -o ~
 source ~/.bashrc
 
 # Show the current distribution
-distribution ()
+function distribution ()
 {
 	local dtype
 	# Assume unknown
@@ -46,7 +46,7 @@ distribution ()
 }
 
 # Show the current version of the operating system
-ec2-setup ()
+function ec2_setup ()
 {
 	local dtype
 	dtype=$(distribution)
@@ -84,4 +84,4 @@ ec2-setup ()
 echo "#########################################"
 echo "######## EC2 Setup ######################"
 echo "#########################################"
-ec2-setup
+ec2_setup
