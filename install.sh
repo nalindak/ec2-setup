@@ -7,7 +7,7 @@ if [ -r ~/.bashrc ]; then
     else
         mv ~/.bashrc ~/.bashrc_original
     fi
-    curl --slient 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc' -o ~/.bashrc
+    curl --silent 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc' -o ~/.bashrc
     source ~/.bashrc
 fi
 
