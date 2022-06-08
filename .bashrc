@@ -3,6 +3,7 @@ iatest=$(expr index "$-" i)
 
 #######################################################
 # SOURCED ALIAS'S AND SCRIPTS BY zachbrowne.me
+# Added my changes - NalindaK
 #######################################################
 
 # Source global definitions
@@ -93,10 +94,6 @@ alias web='cd /var/www/html'
 # To temporarily bypass an alias, we preceed the command with a \
 # EG: the ls command is aliased, but to use the normal ls command you would type \ls
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
 # Edit this .bashrc file
 alias ebrc='edit ~/.bashrc'
 
@@ -151,7 +148,7 @@ alias ll='ls -Fls' # long listing format
 alias labc='ls -lap' #alphabetical sort
 alias lf="ls -l | egrep -v '^d'" # files only
 alias ldir="ls -l | egrep '^d'" # directories only
-alias l='ls -lart --color=always' # directories only
+alias l='ls -lart --color=always' # make it easy with one l
 
 # alias chmod commands
 alias mx='chmod a+x'
@@ -162,7 +159,8 @@ alias 755='chmod -R 755'
 alias 777='chmod -R 777'
 
 # Search command line history
-alias h="history | grep "
+alias hs="history | grep "
+alias hsi="history | grep -i "
 
 # Search running processes
 alias p="ps aux | grep "
@@ -342,16 +340,6 @@ up ()
 	cd $d
 }
 
-#Automatically do an ls after each cd
-# cd ()
-# {
-# 	if [ -n "$1" ]; then
-# 		builtin cd "$@" && ls
-# 	else
-# 		builtin cd ~ && ls
-# 	fi
-# }
-
 # Returns the last 2 fields of the working directory
 pwdtail ()
 {
@@ -465,13 +453,8 @@ install_bashrc_support ()
 netinfo ()
 {
 	echo "--------------- Network Information ---------------"
-	/sbin/ifconfig | awk /'inet addr/ {print $2}'
+	/sbin/ifconfig | grep 'inet ' | awk '{print $2,$4,$5,$6}'
 	echo ""
-	/sbin/ifconfig | awk /'Bcast/ {print $3}'
-	echo ""
-	/sbin/ifconfig | awk /'inet addr/ {print $4}'
-
-	/sbin/ifconfig | awk /'HWaddr/ {print $4,$5}'
 	echo "---------------------------------------------------"
 }
 
@@ -479,58 +462,12 @@ netinfo ()
 alias whatismyip="whatsmyip"
 function whatsmyip ()
 {
-	# Dumps a list of all IP addresses for every device
-	# /sbin/ifconfig |grep -B1 "inet addr" |awk '{ if ( $1 == "inet" ) { print $2 } else if ( $2 == "Link" ) { printf "%s:" ,$1 } }' |awk -F: '{ print $1 ": " $3 }';
-
 	# Internal IP Lookup
-	echo -n "Internal IP: " ; /sbin/ifconfig eth0 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'
+	# echo -n "Internal IP: " ; /sbin/ifconfig eth0 | grep "inet " | awk -F: '{print $2}' | awk '{print $1}'
+	echo -n "Internal IP: " ; /sbin/ifconfig eth0 | grep 'inet ' | awk '{print $2}'
 
 	# External IP Lookup
-	echo -n "External IP: " ; wget http://smart-ip.net/myip -O - -q
-}
-
-# View Apache logs
-apachelog ()
-{
-	if [ -f /etc/httpd/conf/httpd.conf ]; then
-		cd /var/log/httpd && ls -xAh && multitail --no-repeat -c -s 2 /var/log/httpd/*_log
-	else
-		cd /var/log/apache2 && ls -xAh && multitail --no-repeat -c -s 2 /var/log/apache2/*.log
-	fi
-}
-
-# Edit the Apache configuration
-apacheconfig ()
-{
-	if [ -f /etc/httpd/conf/httpd.conf ]; then
-		sedit /etc/httpd/conf/httpd.conf
-	elif [ -f /etc/apache2/apache2.conf ]; then
-		sedit /etc/apache2/apache2.conf
-	else
-		echo "Error: Apache config file could not be found."
-		echo "Searching for possible locations:"
-		sudo updatedb && locate httpd.conf && locate apache2.conf
-	fi
-}
-
-# Edit the PHP configuration file
-phpconfig ()
-{
-	if [ -f /etc/php.ini ]; then
-		sedit /etc/php.ini
-	elif [ -f /etc/php/php.ini ]; then
-		sedit /etc/php/php.ini
-	elif [ -f /etc/php5/php.ini ]; then
-		sedit /etc/php5/php.ini
-	elif [ -f /usr/bin/php5/bin/php.ini ]; then
-		sedit /usr/bin/php5/bin/php.ini
-	elif [ -f /etc/php5/apache2/php.ini ]; then
-		sedit /etc/php5/apache2/php.ini
-	else
-		echo "Error: php.ini file could not be found."
-		echo "Searching for possible locations:"
-		sudo updatedb && locate php.ini
-	fi
+	echo -n "External IP: " ; curl http://checkip.amazonaws.com
 }
 
 # Edit the MySQL configuration file
