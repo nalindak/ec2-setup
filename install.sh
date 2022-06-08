@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Add nice .bashrc
 if [ -r ~/.bashrc ]; then
     if [ -r ~/.bashrc_original ]; then
         echo 'Original bash file is exists!'
@@ -8,6 +9,12 @@ if [ -r ~/.bashrc ]; then
     fi
     curl -s 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.bashrc' -o ~/.bashrc
     source ~/.bashrc
+fi
+
+# Add kubectl command aliases
+if [ ! -f ~/.kubectl_aliases ]; then
+    curl -s 'https://raw.githubusercontent.com/nalindak/ec2-setup/main/.kubectl_aliases' -o ~/.kubectl_aliases
+    source ~/.kubectl_aliases
 fi
 
 # Show the current distribution
