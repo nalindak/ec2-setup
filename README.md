@@ -40,4 +40,16 @@ k describe deploy metrics-server -n kube-system
 k logs -n <namespace> -l app=metrics-server
 k get service -o wide
 k exec --tty --stdin [pod-id] -- sh
+k explain replicaset
+k scale rs [replica-set-name] --replicas=5
+k edit rs [replica-set-name]
+k get all
+```
+
+### To make creation of kube yaml files
+
+```
+k nginx nginx --image=nginx --dry-run=client -o yaml > nginx-pod.yaml
+k create deployment --image=nginx nginx --relicas=3 --dry-run=client -o yaml > nginx-deployment.yaml
+k create -f nginx-deployment.yaml
 ```
