@@ -44,12 +44,23 @@ k explain replicaset
 k scale rs [replica-set-name] --replicas=5
 k edit rs [replica-set-name]
 k get all
+k create namespace [dev]
+
+k config get-clusters
+k config get-contexts
+k config view
+k config current-context
+k create namespace dev
+k get namespace
+k config set-context $(k config current-context) --namespace=dev
+
+
 ```
 
 ### To make creation of kube yaml files
 
 ```
-k nginx nginx --image=nginx --dry-run=client -o yaml > nginx-pod.yaml
+k run nginx --image=nginx --dry-run=client -o yaml > nginx-pod.yaml
 k create deployment --image=nginx nginx --relicas=3 --dry-run=client -o yaml > nginx-deployment.yaml
 k create -f nginx-deployment.yaml
 ```
