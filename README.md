@@ -54,6 +54,10 @@ k create namespace dev
 k get namespace
 k config set-context $(k config current-context) --namespace=dev
 
+k expose pod redis --name=redis-service --port=6379 --dry-run=client -o yaml
+k expose pod nginx --name=nginx-service --type=NodePort --port=80 --dry-run=client -o yaml
+
+k create service clusterip [name] --clusterip="None"
 
 ```
 
@@ -63,4 +67,10 @@ k config set-context $(k config current-context) --namespace=dev
 k run nginx --image=nginx --dry-run=client -o yaml > nginx-pod.yaml
 k create deployment --image=nginx nginx --relicas=3 --dry-run=client -o yaml > nginx-deployment.yaml
 k create -f nginx-deployment.yaml
+```
+
+### Create a pod and a service
+
+```
+k run [pod-name] --image=[image] --port=[port-ip] --expose=true
 ```
