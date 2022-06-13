@@ -59,6 +59,10 @@ k expose pod nginx --name=nginx-service --type=NodePort --port=80 --dry-run=clie
 
 k create service clusterip [name] --clusterip="None"
 
+k get pods --watch
+k get pods --selector run=nginx
+k get pods --selector env=dev --no-headers | wc -l
+k get all --selector env=dev --no-headers | wc -l
 ```
 
 ### To make creation of kube yaml files
@@ -73,4 +77,25 @@ k create -f nginx-deployment.yaml
 
 ```
 k run [pod-name] --image=[image] --port=[port-ip] --expose=true
+```
+
+### Delete existing pod and recreating it
+
+```
+k replace --force -f nginx.yaml
+```
+
+## Node taints and Pod tolerations
+
+```
+k taint node node-name key=value:taint-effect
+k taint node node1 app=blue:NoSchedule
+k taint node node1 app=blue:NoSchedule- [ending with - makes it to remove the taint]
+```
+
+## Label Nodes
+
+```
+k label nodes node-1 size=Large
+k get nodes --show-labels
 ```
