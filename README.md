@@ -46,6 +46,8 @@ k edit rs [replica-set-name]
 k get all
 k create namespace [dev]
 
+k set image deployment/my-app nginx=nginx:1.9.1
+
 k config get-clusters
 k config get-contexts
 k config view
@@ -69,6 +71,7 @@ k get all --selector env=dev --no-headers | wc -l
 
 ```
 k run nginx --image=nginx --dry-run=client -o yaml > nginx-pod.yaml
+k run busybox --image=busybox --dry-run=client -o yaml --command ---- sleep 1000 > busybox.yaml
 k create deployment --image=nginx nginx --relicas=3 --dry-run=client -o yaml > nginx-deployment.yaml
 k create -f nginx-deployment.yaml
 ```
@@ -98,4 +101,41 @@ k taint node node1 app=blue:NoSchedule- [ending with - makes it to remove the ta
 ```
 k label nodes node-1 size=Large
 k get nodes --show-labels
+```
+
+## Static path to kubelet configs
+
+```
+cat /var/lib/kubelet/config.yaml
+```
+
+### Container logs
+
+```
+k logs webapp-2 --all-containers=true
+```
+
+### Rollout
+
+```
+k rollout status deployment/webapp
+k rollout history deployment/nginx
+k rollout undo deployment/my-app
+```
+
+### Deployment Strategy
+
+- Default Deployment Strtegy `Rolling Update`
+
+```
+
+```
+
+### Testing the application
+
+```
+for i in {1..35}; do
+   kubectl exec --namespace=kube-public curl -- sh -c 'test=`wget -qO- -T 2  http://webapp-service.default.svc.cluster.local:8080/info 2>&1` && echo "$test OK" || echo "Failed"';
+   echo ""
+done
 ```
