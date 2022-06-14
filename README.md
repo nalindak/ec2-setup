@@ -127,10 +127,6 @@ k rollout undo deployment/my-app
 
 - Default Deployment Strtegy `Rolling Update`
 
-```
-
-```
-
 ### Testing the application
 
 ```
@@ -138,4 +134,16 @@ for i in {1..35}; do
    kubectl exec --namespace=kube-public curl -- sh -c 'test=`wget -qO- -T 2  http://webapp-service.default.svc.cluster.local:8080/info 2>&1` && echo "$test OK" || echo "Failed"';
    echo ""
 done
+```
+
+### Configmap
+
+```
+k create configmap [config-map-name] --from-literal=key1=config1
+k create secret generic <secret-name> --from-literal=key=value
+```
+
+```
+echo -n 'secret_value' | base64
+echo 'encoded' | base64 --decode
 ```
