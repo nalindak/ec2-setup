@@ -147,3 +147,40 @@ k create secret generic <secret-name> --from-literal=key=value
 echo -n 'secret_value' | base64
 echo 'encoded' | base64 --decode
 ```
+
+### OS Upgrades
+
+```
+k drain node01 --ignore-daemonsets
+k uncordon node01
+k cordon node01
+```
+
+### Kubeadm Commands
+
+```
+kubeadm upgrade plan
+apt-get upgrade -y kubeadm=1.12.0-00
+kubeadm upgrade apply v1.12.0
+apt-get upgrade -y kubelet=1.12.0-00
+kubeadm upgrade node config --kubelet-version v1.12.0
+systemctl restart kubelet
+```
+
+```
+[master node]
+apt update
+apt install kubeadm=1.20.0-00
+kubeadm upgrade apply v1.20.0
+apt install kubelet=1.20.0-00
+systemctl restart kubelet
+kubelet --version
+
+[node]
+k cordon node01 - In master node
+apt update
+apt install kubeadm=1.20.0-00
+kubeadm upgrade node
+apt install kubelet=1.20.0-00
+k uncordon node01 - In master node
+```
