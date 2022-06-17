@@ -184,3 +184,86 @@ kubeadm upgrade node
 apt install kubelet=1.20.0-00
 k uncordon node01 - In master node
 ```
+
+### Backup and restorations
+
+```
+k get all -A -o yaml > all-deploy-service.yaml
+ETCDCTL_API=3 etcdctl snapshot save snapshot.db
+service kube-apiserver stop
+ETCDCTL_API=3 etcdctl snapshot restore snapshot.db --data-dir /var/lib/etcd-from-backup
+service kube-apiserver start
+```
+
+### Manage/create user certificates and approve
+
+```
+k get csr
+k describe csr csr-78hrx
+cat akshay.csr | base64 -w 0
+k create -f akshay.yaml 
+k certificate approve akshay
+
+k config view
+k config --kubeconfig=/root/my-kube-config use-context research
+k config --kubeconfig=/root/my-kube-config current-context
+
+k auth can-i list pods -n default --as dev-user
+
+k get clusterroles
+k get clusterrolebindings
+k get serviceaccounts
+```
+
+### PV and PVS
+
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-log
+spec:
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: /pv/log
+  accessModes:
+    - ReadWriteMany
+```
+
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-log-1
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Mi
+  volumeMode: Filesystem
+  volumeName: pv-log
+status:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 100Mi
+  phase: Bound
+```
+
+```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: standard
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+mountOptions:
+  - debug
+volumeBindingMode: Immediate
+```
