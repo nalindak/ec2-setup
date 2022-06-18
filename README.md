@@ -267,3 +267,59 @@ mountOptions:
   - debug
 volumeBindingMode: Immediate
 ```
+
+### Networking in Kube
+
+```
+ip a | grep -B3 -A3 10.0.202.10
+arp node01
+ip link
+ip route
+route
+cat /etc/resolve.conf
+cat /etc/hosts
+cat /etc/nsswitch.conf
+cat /etc/network/interfaces
+netstat -natulp (t - tcp, u - udp)
+nestat -anp | grep etcd (number of connection to each socket)
+netstat -anp | grep etcd | grep 2379 | wc -l
+```
+
+```
+ip link add v-net-0 type bridge
+ip link set dev v-net-0 up
+ip addr add 192.168.15.5/24 dev v-net-0
+ip link add veth-red type veth peer name veth-red-br
+ip link set veth-red netns red
+ip -n red addr add 192.168.15.1 dev veth-red
+ip -n red link set veth-red up
+ip link set veth-red-br master v-net-0
+ip netns exec blue ip route add 192.168.1.0/24 via 192.168.15.5
+iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -j MASQUERADE
+ip route add 10.244.2.3 via 192.168.1.12
+```
+
+```
+# Create veth pair
+ip link add ....
+
+# Attach veth pair
+ip link set ...
+ip link set ...
+
+# Assign IP Address
+ip -n <namespace> addr add ...
+ip -n <namespace> route add ...
+
+# Bring Up Interface
+ip -n <namespace> link set ...
+```
+
+
+### Performance and CPU and Mem
+
+```
+lscpu
+lsmem
+lsns
+```
