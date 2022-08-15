@@ -42,6 +42,7 @@ k get service -o wide
 k exec --tty --stdin [pod-id] -- sh
 k explain replicaset
 k scale rs [replica-set-name] --replicas=5
+k scale --current-replicas=8 --replicas=12 deployment/name
 k edit rs [replica-set-name]
 k get all
 k create namespace [dev]
